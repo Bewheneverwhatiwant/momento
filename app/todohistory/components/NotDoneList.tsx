@@ -2,17 +2,35 @@
 import { Box, Typography } from '@mui/material';
 import CheckDiv from './CheckDiv';
 
+interface RawTodoItem {
+	familyTodoId: number;
+	content: string;
+	category: string;
+	status: string;
+	assignedAt: string;
+	dueDate: string;
+	completedAt: string | null;
+	memo: string;
+	imageUrl: string;
+}
+
 interface TodoType {
 	month: number;
-	todolist: [string, boolean][]; // 각 항목은 [내용, isDone]
+	todolist: [string, boolean][];
 }
 
 interface TodoProps {
-	todoData: TodoType[];
+	todoData: RawTodoItem[]; // ⬅ 원본 API 그대로 받음
 }
 
 export default function NotDoneList({ todoData }: TodoProps) {
 	const hasData = Array.isArray(todoData) && todoData.length > 0;
+
+	// ✅ CheckDiv에 맞게 변환
+	const transformed: TodoType = {
+		month: 6, // 예시로 6월. 실제라면 assignedAt 기준으로 계산 가능
+		todolist: todoData.map((item) => [item.content, item.status === 'COMPLETED']),
+	};
 
 	return (
 		<Box
@@ -28,9 +46,7 @@ export default function NotDoneList({ todoData }: TodoProps) {
 			}}
 		>
 			{hasData ? (
-				todoData.map((todo, idx) => (
-					<CheckDiv key={idx} todoData={todo} />
-				))
+				<CheckDiv todoData={transformed} />
 			) : (
 				<Typography sx={{ color: '#999999' }}>
 					아직 데이터가 없어요.

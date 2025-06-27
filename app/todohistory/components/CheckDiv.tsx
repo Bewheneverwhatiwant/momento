@@ -4,15 +4,17 @@ import { useRouter } from 'next/navigation';
 
 interface TodoType {
 	month: number;
-	todolist: [string, boolean][];
+	todolist: [string, boolean][]; // [내용, 체크 여부]
 }
 
 interface TodoProps {
-	todoData: TodoType;
+	todoData?: TodoType; // optional로 정의해서 undefined 대응
 }
 
 export default function CheckDiv({ todoData }: TodoProps) {
 	const router = useRouter();
+
+	const list = todoData?.todolist ?? [];
 
 	return (
 		<Box
@@ -30,7 +32,7 @@ export default function CheckDiv({ todoData }: TodoProps) {
 				boxShadow: '0 0 10px rgba(0, 0, 0, 0.08)',
 			}}
 		>
-			{todoData.todolist.map((todo, index) => (
+			{list.map(([text, checked], index) => (
 				<Box
 					key={index}
 					sx={{
@@ -42,6 +44,7 @@ export default function CheckDiv({ todoData }: TodoProps) {
 					}}
 				>
 					<Checkbox
+						checked={checked}
 						onClick={(e) => {
 							e.preventDefault();
 							router.push('/certificate');
@@ -56,7 +59,7 @@ export default function CheckDiv({ todoData }: TodoProps) {
 						}}
 					/>
 					<Typography sx={{ color: '#6E4C36', fontSize: '0.9rem' }}>
-						{todo}
+						{text}
 					</Typography>
 				</Box>
 			))}

@@ -2,7 +2,6 @@
 import { Box, Button, Typography, Snackbar } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { serverCall } from '@/app/api/serverCall';
 
 export default function AddStory() {
 	const router = useRouter();
@@ -47,14 +46,12 @@ export default function AddStory() {
 
 		const file = fileInputRef.current.files[0];
 		const formData = new FormData();
-		formData.append('image', file);
+		formData.append('image', file); // ✅ key는 "image"로 해야 서버에서 인식 가능
 
 		try {
-			const apiBaseUrl = process.env.NEXT_PUBLIC_SERVER_URI;
-			const response = await fetch(`${apiBaseUrl}/api/v1/stories`, {
+			const response = await fetch('https://dev.caffeineoverdose.shop/api/v1/stories', {
 				method: 'POST',
-				body: formData,
-
+				body: formData, // ✅ 헤더는 생략해야 브라우저가 자동으로 multipart 설정
 			});
 
 			if (!response.ok) {
@@ -71,7 +68,6 @@ export default function AddStory() {
 			alert('스토리 업로드 중 오류가 발생했습니다.');
 		}
 	};
-
 
 	return (
 		<Box
@@ -90,7 +86,9 @@ export default function AddStory() {
 			}}
 		>
 			{isPicking ? (
-				<Typography sx={{ fontSize: '1.2rem', color: '#6E4C36' }}>앨범을 열고 있어요...</Typography>
+				<Typography sx={{ fontSize: '1.2rem', color: '#6E4C36' }}>
+					앨범을 열고 있어요...
+				</Typography>
 			) : (
 				<>
 					<Box

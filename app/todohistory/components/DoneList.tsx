@@ -2,8 +2,20 @@
 import { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 
+interface TodoItem {
+	familyTodoId: number;
+	content: string;
+	category: string;
+	status: string;
+	assignedAt: string;
+	dueDate: string;
+	completedAt: string;
+	memo: string;
+	imageUrl: string;
+}
+
 interface TodoProps {
-	todoData: string[];
+	todoData: TodoItem[];
 }
 
 interface DoneItemData {
@@ -18,9 +30,10 @@ export default function DoneList({ todoData }: TodoProps) {
 		Array(todoData.length).fill(false)
 	);
 
-	const doneMockData: DoneItemData[] = todoData.map((_, i) => ({
-		img: '/img/my_banner_family.svg',
-		memo: `제발 자고싶어 ${i + 1}`,
+	// 이미지 및 메모는 실제 todoData의 값으로부터 추출
+	const doneMockData: DoneItemData[] = todoData.map((item) => ({
+		img: item.imageUrl || '/img/my_banner_family.svg',
+		memo: item.memo || '메모 없음',
 	}));
 
 	const handleToggle = (index: number) => {
@@ -44,7 +57,7 @@ export default function DoneList({ todoData }: TodoProps) {
 		>
 			{hasData ? (
 				todoData.map((item, index) => (
-					<Box key={index} sx={{ width: '100%' }}>
+					<Box key={item.familyTodoId} sx={{ width: '100%' }}>
 						<Button
 							onClick={() => handleToggle(index)}
 							sx={{
@@ -71,7 +84,7 @@ export default function DoneList({ todoData }: TodoProps) {
 								}}
 							/>
 							<Typography sx={{ color: '#6E4C36', fontSize: '1.1rem', fontWeight: 'bold' }}>
-								{item}
+								{item.content}
 							</Typography>
 						</Button>
 
