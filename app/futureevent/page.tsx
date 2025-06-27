@@ -46,7 +46,7 @@ export default function FutureEvent() {
 			// alert('에러가 발생했습니다. 콘솔을 확인하세요.');
 		} finally {
 			setOpen(false);
-			alert('성공적으로 발송되었습니다!'); // ✅ 성공 여부와 무관하게 항상 뜸
+			alert('성공적으로 발송되었습니다!');
 			router.push('/explore');
 		}
 	};
