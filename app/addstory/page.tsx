@@ -46,12 +46,12 @@ export default function AddStory() {
 
 		const file = fileInputRef.current.files[0];
 		const formData = new FormData();
-		formData.append('image', file); // ✅ key는 "image"로 해야 서버에서 인식 가능
+		formData.append('image', file);
 
 		try {
-			const response = await fetch('https://dev.caffeineoverdose.shop/api/v1/stories', {
+			const response = await fetch('api/stories', {
 				method: 'POST',
-				body: formData, // ✅ 헤더는 생략해야 브라우저가 자동으로 multipart 설정
+				body: formData,
 			});
 
 			if (!response.ok) {

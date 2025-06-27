@@ -1,0 +1,8 @@
+{
+	"rewrites": [
+		{
+			"source": "/api/stories",
+			"destination": "https://dev.caffeineoverdose.shop/api/v1/stories"
+		}
+	]
+}
